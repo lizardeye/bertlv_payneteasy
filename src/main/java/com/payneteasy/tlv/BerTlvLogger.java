@@ -1,29 +1,34 @@
 package com.payneteasy.tlv;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class BerTlvLogger {
 
+    private final static Logger LOG = LoggerFactory.getLogger(BerTlvLogger.class);
 
-    public static void log(String aPadding, BerTlvs aTlv, IBerTlvLogger aLogger) {
-
-        for (BerTlv tlv : aTlv.getList()) {
-            log(aPadding, tlv, aLogger);
+    public static void log(String aPadding, BerTlvs aTlv) {
+        if (LOG.isDebugEnabled()) {
+            for (BerTlv tlv : aTlv.getList()) {
+                log(aPadding, tlv);
+            }
         }
     }
 
-    public static void log(String aPadding, BerTlv aTlv, IBerTlvLogger aLogger) {
+    public static void log(String aPadding, BerTlv aTlv) {
         if (aTlv == null) {
-            aLogger.debug("{} is null", aPadding);
+            LOG.debug("{} is null", aPadding);
             return;
         }
 
         if (aTlv.isConstructed()) {
-            aLogger.debug("{} [{}]", aPadding, HexUtil.toHexString(aTlv.getTag().bytes));
+            LOG.debug("{} [{}]", aPadding, HexUtil.toHexString(aTlv.getTag().bytes));
             for (BerTlv child : aTlv.getValues()) {
-                log(aPadding + "    ", child, aLogger);
+                log(aPadding + "    ", child);
             }
         } else {
-            aLogger.debug("{} [{}] {}", aPadding, HexUtil.toHexString(aTlv.getTag().bytes), aTlv.getHexValue());
+            LOG.debug("{} [{}] {}", aPadding, HexUtil.toHexString(aTlv.getTag().bytes), aTlv.getHexValue());
         }
 
     }

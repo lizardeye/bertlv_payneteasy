@@ -109,7 +109,7 @@ public class BerTlvBuilderTest {
         byte[] expectedBuffer = parseHex(hex);
         BerTlv source = new BerTlvParser().parseConstructed(expectedBuffer);
 
-        BerTlvLogger.log("....", source, new BerTlvLoggerSlf4j());
+        BerTlvLogger.log("....", source);
         {
             byte[] out = BerTlvBuilder
                     .from(source)
@@ -119,7 +119,7 @@ public class BerTlvBuilderTest {
                     .from(source)
                     .buildTlv();
 
-            BerTlvLogger.log("....", outTlv, new BerTlvLoggerSlf4j());
+            BerTlvLogger.log("....", outTlv);
 
             Assert.assertArrayEquals(expectedBuffer, out);
         }
@@ -128,7 +128,7 @@ public class BerTlvBuilderTest {
             BerTlv outTlv = new BerTlvBuilder().addBerTlv(source).buildTlv();
             byte[] out = new BerTlvBuilder().addBerTlv(source).buildArray();
 
-            BerTlvLogger.log("....", outTlv, new BerTlvLoggerSlf4j());
+            BerTlvLogger.log("....", outTlv);
             Assert.assertArrayEquals(expectedBuffer, out);
         }
 
@@ -179,7 +179,7 @@ public class BerTlvBuilderTest {
         BerTlvBuilder builder = new BerTlvBuilder();
         builder.addBytes(new BerTag(0xd8), bigData);
         BerTlvs berTlvs = builder.buildTlvs();
-        BerTlvLogger.log("    ", berTlvs, new BerTlvLoggerSlf4j());
+        BerTlvLogger.log("    ", berTlvs);
 
         Assert.assertEquals(1, berTlvs.getList().size());
     }
@@ -196,7 +196,7 @@ public class BerTlvBuilderTest {
                 .addBerTlv(tlv)
                 .buildTlv();
 
-        BerTlvLogger.log("    ", berTlv, new BerTlvLoggerSlf4j());
+        BerTlvLogger.log("    ", berTlv);
 
         System.out.println("bytes = " + HexUtil.toFormattedHexString(bytes));
     }

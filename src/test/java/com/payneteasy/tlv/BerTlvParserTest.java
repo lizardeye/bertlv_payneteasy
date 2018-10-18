@@ -7,7 +7,6 @@ public class BerTlvParserTest {
 
     public static final BerTag TAG_DF0D_ID = new BerTag(0xdf, 0x0d);
     public static final BerTag TAG_DF7F_VERSION = new BerTag(0xdf, 0x7f);
-    private static final BerTlvLoggerSlf4j LOG = new BerTlvLoggerSlf4j();
     public static final BerTag T_EF = new BerTag(0xEF);
 
 
@@ -38,9 +37,9 @@ public class BerTlvParserTest {
     private BerTlvs parse(String hex) {
         byte[] bytes = HexUtil.parseHex(hex);
 
-        BerTlvParser parser = new BerTlvParser(LOG);
+        BerTlvParser parser = new BerTlvParser();
         BerTlvs tlvs = parser.parse(bytes, 0, bytes.length);
-        BerTlvLogger.log("    ", tlvs, LOG);
+        BerTlvLogger.log("    ", tlvs);
         return tlvs;
     }
 
@@ -100,9 +99,15 @@ public class BerTlvParserTest {
     }
 
     @Test
+    public void testBankExample(){
+        BerTlv tlv = new  BerTlvParser().parseConstructed(HexUtil.parseHex("F020C016T408178100000000000564C902TY"));
+        BerTlvLogger.log("    ", tlv);
+
+    }
+    @Test
     public void test_empty_length() {
-        BerTlv tlv = new BerTlvParser(LOG).parseConstructed(HexUtil.parseHex("E3 02 01 00"));
-        BerTlvLogger.log("    ", tlv, LOG);
+        BerTlv tlv = new BerTlvParser().parseConstructed(HexUtil.parseHex("E3 02 01 00"));
+        BerTlvLogger.log("    ", tlv);
 
         Assert.assertEquals(tlv.getTag(), new BerTag(0xe3));
         Assert.assertNotNull(tlv.getValues());
@@ -115,7 +120,7 @@ public class BerTlvParserTest {
     @Test
     public void test_empty_hex() {
         byte[] bytes = HexUtil.parseHex("");
-        BerTlvParser parser = new BerTlvParser(LOG);
+        BerTlvParser parser = new BerTlvParser();
         BerTlvs tlvs = parser.parse(bytes, 0, bytes.length);
         Assert.assertEquals(0, tlvs.getList().size());
     }
